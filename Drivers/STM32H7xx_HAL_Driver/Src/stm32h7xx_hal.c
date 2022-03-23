@@ -33,6 +33,9 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#if defined(UBINOS_PRESENT)
+#include <ubinos.h>
+#endif /* defined(UBINOS_PRESENT) */
 #include "stm32h7xx_hal.h"
 
 /** @addtogroup STM32H7xx_HAL_Driver
@@ -133,15 +136,19 @@ HAL_TickFreqTypeDef uwTickFreq = HAL_TICK_FREQ_DEFAULT;  /* 1KHz */
   */
 HAL_StatusTypeDef HAL_Init(void)
 {
-
-uint32_t common_system_clock;
-
+#if defined(UBINOS_BSP_PRESENT)
+#else
 #if defined(DUAL_CORE) && defined(CORE_CM4)
    /* Configure Cortex-M4 Instruction cache through ART accelerator */
    __HAL_RCC_ART_CLK_ENABLE();                   /* Enable the Cortex-M4 ART Clock */
    __HAL_ART_CONFIG_BASE_ADDRESS(0x08100000UL);  /* Configure the Cortex-M4 ART Base address to the Flash Bank 2 : */
    __HAL_ART_ENABLE();                           /* Enable the Cortex-M4 ART */
 #endif /* DUAL_CORE &&  CORE_CM4 */
+#endif /* defined(UBINOS_BSP_PRESENT) */
+
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+#else
+  uint32_t common_system_clock;
 
   /* Set Interrupt Group Priority */
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
@@ -171,6 +178,7 @@ uint32_t common_system_clock;
   {
     return HAL_ERROR;
   }
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 
   /* Init the low level hardware */
   HAL_MspInit();
@@ -261,6 +269,9 @@ __weak void HAL_MspDeInit(void)
   */
 __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  return HAL_OK;
+#else
   /* Check uwTickFreq for MisraC 2012 (even if uwTickFreq is a enum type that don't take the value zero)*/
   if((uint32_t)uwTickFreq == 0UL)
   {
@@ -286,6 +297,7 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 
   /* Return function status */
   return HAL_OK;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
@@ -326,7 +338,10 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   */
 __weak void HAL_IncTick(void)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+#else
   uwTick += (uint32_t)uwTickFreq;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
@@ -337,7 +352,11 @@ __weak void HAL_IncTick(void)
   */
 __weak uint32_t HAL_GetTick(void)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  return ubik_gettickcount().low;
+#else
   return uwTick;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
@@ -346,6 +365,11 @@ __weak uint32_t HAL_GetTick(void)
   */
 uint32_t HAL_GetTickPrio(void)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  // Not supported
+  ubi_assert(0);
+#else
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
   return uwTickPrio;
 }
 
@@ -355,6 +379,11 @@ uint32_t HAL_GetTickPrio(void)
   */
 HAL_StatusTypeDef HAL_SetTickFreq(HAL_TickFreqTypeDef Freq)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  // Not supported
+  ubi_assert(0);
+  return HAL_ERROR;
+#else
   HAL_StatusTypeDef status  = HAL_OK;
   HAL_TickFreqTypeDef prevTickFreq;
 
@@ -379,6 +408,7 @@ HAL_StatusTypeDef HAL_SetTickFreq(HAL_TickFreqTypeDef Freq)
   }
 
   return status;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
@@ -387,7 +417,11 @@ HAL_StatusTypeDef HAL_SetTickFreq(HAL_TickFreqTypeDef Freq)
   */
 HAL_TickFreqTypeDef HAL_GetTickFreq(void)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  return max(1, 1000 / ubik_gettickpersec());
+#else
   return uwTickFreq;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
@@ -409,7 +443,11 @@ __weak void HAL_Delay(uint32_t Delay)
   /* Add a freq to guarantee minimum wait */
   if (wait < HAL_MAX_DELAY)
   {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+    wait += (uint32_t)(HAL_GetTickFreq());
+#else
     wait += (uint32_t)(uwTickFreq);
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
   }
 
   while ((HAL_GetTick() - tickstart) < wait)
@@ -429,8 +467,13 @@ __weak void HAL_Delay(uint32_t Delay)
   */
 __weak void HAL_SuspendTick(void)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  // Not supported
+  ubi_assert(0);
+#else
   /* Disable SysTick Interrupt */
   SysTick->CTRL &= ~SysTick_CTRL_TICKINT_Msk;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
@@ -445,8 +488,13 @@ __weak void HAL_SuspendTick(void)
   */
 __weak void HAL_ResumeTick(void)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  // Not supported
+  ubi_assert(0);
+#else
   /* Enable SysTick Interrupt */
   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**

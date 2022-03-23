@@ -16,6 +16,9 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#if defined(UBINOS_PRESENT)
+#include <ubinos/bsp.h>
+#endif
 #include "stm32h7xx_ll_utils.h"
 #include "stm32h7xx_ll_rcc.h"
 #include "stm32h7xx_ll_pwr.h"
@@ -304,6 +307,9 @@ void LL_Init1msTick(uint32_t CPU_Frequency)
   */
 void LL_mDelay(uint32_t Delay)
 {
+#if defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1)
+  bsp_busywait(bsp_timemstobwc(Delay));
+#else
   uint32_t count = Delay;
   __IO uint32_t  tmp = SysTick->CTRL;  /* Clear the COUNTFLAG first */
   /* Add this code to indicate that local variable is not used */
@@ -322,6 +328,7 @@ void LL_mDelay(uint32_t Delay)
       count--;
     }
   }
+#endif /* defined(UBINOS_PRESENT) && (STM32CUBEH7__USE_HAL_WITH_UBINOS_TICK == 1) */
 }
 
 /**
