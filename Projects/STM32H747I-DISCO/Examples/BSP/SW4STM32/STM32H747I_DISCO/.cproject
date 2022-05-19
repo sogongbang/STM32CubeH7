@@ -39,7 +39,7 @@
 								<option id="gnu.c.compiler.option.include.paths.1717099321" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../CM4/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/CMSIS/Device/ST/STM32H7xx/Include"/>
-									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Audio/Addons/PDM/Inc"/>
+									<listOptionValue builtIn="false" value="../../../../../Demonstrations/STemWin/Modules/audio_player/Addons/PDM/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/STM32H7xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/STM32H747I-DISCO"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/BSP/Components/Common"/>
@@ -86,10 +86,10 @@
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.926574348" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker">
 								<option id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script.400281776" name="Linker Script (-T)" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script" useByScannerDiscovery="false" value="../STM32H747XIHx_FLASH_CM4.ld" valueType="string"/>
 								<option id="gnu.c.link.option.libs.1616926337" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value=":libPDMFilter_CM7_IAR_wc32.a"/>
+									<listOptionValue builtIn="false" value="PDMFilter_CM7_GCC_wc32"/>
 								</option>
 								<option id="gnu.c.link.option.paths.1841726251" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Audio/Addons/PDM/Lib"/>
+									<listOptionValue builtIn="false" value="../../../../../Demonstrations/STemWin/Modules/audio_player/Addons/PDM/Lib"/>
 								</option>
 								<option id="gnu.c.link.option.ldflags.1119967259" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-specs=nosys.specs -specs=nano.specs" valueType="string"/>
 								<option id="gnu.c.link.option.other.126846287" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" useByScannerDiscovery="false"/>
@@ -172,7 +172,7 @@
 									<listOptionValue builtIn="false" value="../../../../../../../Utilities/lcd"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Utilities/Fonts"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Utilities/CPU"/>
-									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Audio/Addons/PDM/Inc"/>
+									<listOptionValue builtIn="false" value="../../../../../Demonstrations/STemWin/Modules/audio_player/Addons/PDM/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../../../Drivers/CMSIS/Include"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1867378911" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -215,10 +215,10 @@
 							<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.1135067195" name="MCU GCC Linker" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker">
 								<option id="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script.518392365" name="Linker Script (-T)" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.linker.script" useByScannerDiscovery="false" value="../STM32H747XIHx_FLASH_CM7.ld" valueType="string"/>
 								<option id="gnu.c.link.option.libs.737616352" name="Libraries (-l)" superClass="gnu.c.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value=":libPDMFilter_CM7_IAR_wc32.a"/>
+									<listOptionValue builtIn="false" value="PDMFilter_CM7_GCC_wc32"/>
 								</option>
 								<option id="gnu.c.link.option.paths.589227389" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
-									<listOptionValue builtIn="false" value="../../../../../../../Middlewares/ST/STM32_Audio/Addons/PDM/Lib"/>
+									<listOptionValue builtIn="false" value="../../../../../Demonstrations/STemWin/Modules/audio_player/Addons/PDM/Lib"/>
 								</option>
 								<option id="gnu.c.link.option.ldflags.1124839032" name="Linker flags" superClass="gnu.c.link.option.ldflags" useByScannerDiscovery="false" value="-specs=nosys.specs -specs=nano.specs" valueType="string"/>
 								<option id="gnu.c.link.option.other.687920496" name="Other options (-Xlinker [option])" superClass="gnu.c.link.option.other" useByScannerDiscovery="false"/>
